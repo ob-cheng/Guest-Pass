@@ -19,7 +19,8 @@ function updatePasswordState() {
     if (isOpen) {
         encryptionInput.value = 'nopass';
         passwordInput.value = '';
-        passwordContainer.style.display = 'none';
+        
+        passwordContainer.classList.add('collapsed');
         
         // Disable hide password option
         hidePasswordCheckbox.checked = false;
@@ -27,7 +28,8 @@ function updatePasswordState() {
         hidePasswordCheckbox.parentNode.nextElementSibling.classList.add('opacity-50');
     } else {
         encryptionInput.value = 'WPA';
-        passwordContainer.style.display = 'block';
+        
+        passwordContainer.classList.remove('collapsed');
         
             // Re-enable hide password option
         hidePasswordCheckbox.disabled = false;
@@ -38,8 +40,13 @@ function updatePasswordState() {
 // Event Listener
 openNetworkCheckbox.addEventListener('change', updatePasswordState);
 
-// Run on load to ensure correct state
-updatePasswordState();
+// Run on load from state
+// (Wait until DOM is fully loaded or just run it now if script is deferred/at end)
+passwordContainer.classList.add('smooth-collapse');
+const passwordSectionElement = document.getElementById('password-section');
+if (passwordSectionElement) {
+    passwordSectionElement.classList.add('smooth-collapse');
+}
 
 // Real-time card text updates
 document.getElementById('card-title').addEventListener('input', (e) => {
@@ -245,9 +252,9 @@ form.addEventListener('submit', async (e) => {
 
         if (currentEncryption === 'nopass' || hidePasswordCheckbox.checked) {
             // Hide password section for open networks or when user chose to hide
-            passwordSection.style.display = 'none';
+            passwordSection.classList.add('collapsed');
         } else {
-            passwordSection.style.display = 'block';
+            passwordSection.classList.remove('collapsed');
             // Check if open network is NOT checked before showing password
             if (!openNetworkCheckbox.checked) {
                     displayPassword.textContent = data.password;
@@ -275,19 +282,82 @@ form.addEventListener('submit', async (e) => {
     }
 });
 
+// Helper for smooth height transition
+function animateHeightToggle(el, show) {
+    if (!el) return;
+    
+    // Prevent overlapping animations
+    if (el.dataset.isAnimating === 'true') return;
+    el.dataset.isAnimating = 'true';
+
+    if (show) {
+        // OPENING
+        el.classList.remove('collapsed');
+        el.style.display = 'block'; // Ensure it's visible to calc height
+        
+        // Get natural height
+        const height = el.scrollHeight;
+        
+        // Use a slight buffer if it seems small (often borders/margins get lost)
+        // or just set it.
+        
+        // Start from 0 if it was collapsed
+        if (el.style.maxHeight === '0px' || !el.style.maxHeight) {
+            el.style.maxHeight = '0px';
+        }
+        
+        void el.offsetHeight; // Force reflow
+        
+        el.style.maxHeight = height + 'px';
+        el.style.opacity = '1';
+        
+        // Cleanup after transition
+        setTimeout(() => {
+            el.style.maxHeight = null; // Remove restriction so it adapts
+            el.dataset.isAnimating = 'false';
+        }, 300);
+        
+    } else {
+        // CLOSING
+        
+        // Set fixed height to current height so we can transition FROM it
+        el.style.maxHeight = el.scrollHeight + 'px';
+        el.style.opacity = '1';
+        
+        void el.offsetHeight; // Force reflow
+        
+        el.classList.add('collapsed');
+        el.style.maxHeight = '0px';
+        el.style.opacity = '0';
+        
+        setTimeout(() => {
+            el.dataset.isAnimating = 'false';
+        }, 300);
+    }
+}
+
 // Real-time card visibility updates
 function updateCardVisibility() {
     const passwordSection = document.getElementById('password-section');
     
     // If open network OR hide password checked -> hide
-    if (openNetworkCheckbox.checked || hidePasswordCheckbox.checked) {
-        passwordSection.style.display = 'none';
+    const shouldHide = openNetworkCheckbox.checked || hidePasswordCheckbox.checked;
+    
+    // Use helper for better animation
+    // But direct class toggle is safer for sync issues if we spam click.
+    // The CSS `max-height: 100px` tweak I did is robust enough for now 
+    // without risking complex JS race conditions on height.
+    // I will stick to the CSS class toggle I just improved, 
+    // but ensure the state is applied correctly.
+    
+    if (shouldHide) {
+        passwordSection.classList.add('collapsed');
     } else {
-        passwordSection.style.display = 'block';
+        passwordSection.classList.remove('collapsed');
     }
     
     // Sync print area after visual update
-    setTimeout(updatePrintArea, 0);
+    setTimeout(updatePrintArea, 300); 
 }
 
 // Also update print area on input changes
@@ -300,7 +370,116 @@ customizationInputs.forEach(id => {
 });
 
 hidePasswordCheckbox.addEventListener('change', updateCardVisibility);
+
+// "Update Needed" Logic
+const generateBtn = form.querySelector('button[type="submit"]');
+const btnText = generateBtn.querySelector('span');
+const originalBtnText = btnText.textContent;
+let isCardGenerated = false;
+
+function triggerUpdateState() {
+    if (!isCardGenerated) return;
+    
+    generateBtn.classList.add('btn-update-needed');
+    btnText.textContent = 'Update QR Code';
+}
+
+function resetUpdateState() {
+    generateBtn.classList.remove('btn-update-needed');
+    btnText.textContent = originalBtnText;
+    isCardGenerated = true; // Mark as generated so future edits trigger it
+}
+
+// Watch for changes that affect QR Code specifically
+const criticalInputs = ['ssid', 'password', 'open-network', 'encryption'];
+criticalInputs.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    
+    if (el.type === 'checkbox') {
+        el.addEventListener('change', triggerUpdateState);
+    } else {
+        el.addEventListener('input', triggerUpdateState);
+    }
+});
+
+// Hook into the existing form submit to reset state
+form.addEventListener('submit', () => {
+    // Determine if we should really reset. 
+    // The main submit handler is async but runs instantly.
+    // We can safely reset here.
+    resetUpdateState();
+});
 openNetworkCheckbox.addEventListener('change', () => {
         updatePasswordState();
         updateCardVisibility();
+});
+
+// Accordion Animation Logic
+document.querySelectorAll('details').forEach((el) => {
+    const summary = el.querySelector('summary');
+    const content = el.querySelector('summary + div'); // The content div
+
+    // Store the animation status
+    let isAnimating = false;
+
+    summary.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        if (isAnimating) return; // Ignore clicks during animation
+        
+        el.style.overflow = 'hidden';
+
+        if (el.open) {
+            // Close Animation
+            isAnimating = true;
+            
+            // Set height to current full height to start transition
+            const startHeight = el.offsetHeight;
+            el.style.height = `${startHeight}px`;
+            
+            // Force reflow
+            void el.offsetHeight; 
+            
+            // Set height to summary height (closed state)
+            const endHeight = summary.offsetHeight;
+            el.style.height = `${endHeight}px`;
+            
+            // Wait for transition to finish
+            el.addEventListener('transitionend', function onEnd() {
+                el.removeEventListener('transitionend', onEnd);
+                el.open = false;
+                el.style.height = null; // Reset height
+                isAnimating = false;
+            });
+            
+        } else {
+            // Open Animation
+            isAnimating = true;
+            
+            // Calculate height of closed state
+            const startHeight = el.offsetHeight;
+            
+            // Open specifically to calculate target height
+            el.open = true;
+            const endHeight = el.offsetHeight;
+            // Also add a little buffer if content has margins, or just trust offsetHeight
+            
+            // Reset to start height to begin animation
+            el.style.height = `${startHeight}px`;
+            
+            // Force reflow
+            void el.offsetHeight;
+            
+            // Transition to full height
+            el.style.height = `${endHeight}px`;
+            
+            el.addEventListener('transitionend', function onEnd() {
+                el.removeEventListener('transitionend', onEnd);
+                el.style.height = null; // Remove fixed height so it can be dynamic
+                el.style.overflow = 'visible'; // Allow overflow if needed (e.g. tooltips)
+                isAnimating = false;
+            });
+        }
+    });
 });

@@ -177,7 +177,7 @@ html, body {
 details > summary {
     list-style: none; /* Firefox/Standard */
     position: relative;
-    /* padding-right: 2.5rem; Space for the arrow - removed to keep layout tight */ 
+    /* padding-right: 2.5rem; Space for the arrow */ 
 }
 details > summary::-webkit-details-marker {
     display: none; /* Chrome/Safari */
@@ -195,4 +195,87 @@ details > summary::after {
 }
 details[open] > summary::after {
     transform: translateY(-50%) rotate(270deg);
+}
+
+/* Accordion Animation */
+details {
+    overflow: hidden;
+    transition: height 0.3s ease-out;
+}
+
+/* Dynamic Height & Scrolling for Desktop/Tablet */
+@media (min-width: 769px) {
+    #form-section,
+    #guest-card {
+        max-height: calc(100vh - 160px); /* Space for footer and top padding */
+        overflow-y: auto;
+        
+        /* Firefox */
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.4) rgba(255, 255, 255, 0.05);
+    }
+
+    /* Webkit Scrollbar Styling */
+    #form-section::-webkit-scrollbar,
+    #guest-card::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    #form-section::-webkit-scrollbar-track,
+    #guest-card::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05); 
+        border-radius: 4px;
+    }
+
+    #form-section::-webkit-scrollbar-thumb,
+    #guest-card::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.3); 
+        border-radius: 4px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+    }
+
+    #form-section::-webkit-scrollbar-thumb:hover,
+    #guest-card::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(255, 255, 255, 0.5); 
+    }
+}
+/* Smooth Collapse/Expand Utility */
+/* Smooth Collapse/Expand Utility */
+.smooth-collapse {
+    /* 
+       Using 80px as a "safe" max-height for single input fields/text rows.
+       The delay comes from animating 200px -> 0px when content is only 50px. 
+       Reducing this minimizes the invisible part of the animation.
+    */
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                margin 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                border 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 100px; 
+    opacity: 1;
+    overflow: hidden;
+}
+.smooth-collapse.collapsed {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    border: none !important;
+}
+
+/* Attention seeking pulse for update button */
+@keyframes softPulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+.btn-update-needed {
+    background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.3) 100%) !important;
+    animation: softPulse 2s infinite;
+    border-color: rgba(255,255,255,0.8) !important;
+    transform: scale(1.02);
 }
