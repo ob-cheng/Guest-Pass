@@ -169,20 +169,8 @@ function updatePrintArea() {
     // Apply consistent clean style
     cleanUpCardForExport(cardContent);
     
-    // Print specific overrides (white background for paper saving if desired, 
-    // but user asked for "same color background", presumably referring to the dark card)
-    // Actually, for PRINT, usually white is better, but user complained about "gray color".
-    // Let's stick to the high-contrast dark card as it looks premium, unless they want ink-saving.
-    // "it should just be all the same color background"
-    
-    // Re-applying white for print media query override issues if needed,
-    // but let's try to honor the dark theme if that's what they liked in the share.
-    // Wait, for *PRINT* specifically, usually people want white.
-    // The previous print logic set it to white/black text.
-    // Let's keep print as "Ink Friendly" (White) but clean, 
-    // and Share as "Digital Premium" (Dark).
-    
     // OVERRIDE for PRINT specifically to stay ink-friendly but clean
+    // Keep print as "Ink Friendly" (White) but clean, and Share as "Digital Premium" (Dark).
     cardContent.style.background = 'white';
     cardContent.style.color = 'black';
     cardContent.style.border = '2px solid black'; // Clean border for paper
@@ -234,8 +222,6 @@ form.addEventListener('submit', async (e) => {
         qrString += ';';
 
         // Generate QR Code
-        // Using QRCode from qrcodejs or similar library. 
-        // Syntax: QRCode.toDataURL(text, options) -> Promise<url>
         
         const qrUrl = await QRCode.toDataURL(qrString, {
             width: 400,
