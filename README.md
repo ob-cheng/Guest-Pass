@@ -22,7 +22,7 @@ The QR code generation logic follows standard WiFi connection protocols, but imp
 2.  **Visual Encoding:** We use a JavaScript library (`qrcode.js`) to convert this text string into a matrix of black and white pixels (the QR code) directly in the DOM.
 3.  **Image Generation:** When you click "Share," we use `html2canvas` to take a high-resolution screenshot of the DOM element and convert it to a PNG blob, all without external APIs.
 
-## �️ Installation & Usage
+## 💻 Installation & Usage
 
 ### 1. Clone the Repository
 Start by cloning the project to your local machine:
