@@ -167,3 +167,11 @@ html, body {
 
 /* Ensure print area is hidden by default on screen */
 #print-area { display: none; }
+
+/* Footer Adjustments */
+@media (max-width: 768px) {
+    /* Ensure content doesn't get hidden behind the fixed footer on mobile */
+    main {
+        padding-bottom: 5rem; 
+    }
+}
