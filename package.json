@@ -1,0 +1,19 @@
+{
+  "name": "guestpass",
+  "version": "1.0.0",
+  "description": "WiFi QR Code Guest Card Generator",
+  "main": "server.ts",
+  "scripts": {
+    "start": "node --experimental-strip-types server.ts"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "@types/qrcode": "^1.5.5",
+    "typescript": "^5.7.2"
+  }
+}
