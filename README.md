@@ -49,7 +49,7 @@ Then open `http://localhost:8000` in your browser.
 
 **Method C: Drag & Drop**
 Refactoring to client-side means you can also just locate the folder and double-click `index.html`. 
-*Note: Ensure `style.css` and `script.js` are present in the same directory.*
+*Note: Ensure the `assets` folder is present in the same directory.*
 
 ## ✨ Features
 *   **Secure:** 100% offline-capable logic.
