@@ -1,0 +1,17 @@
+# General
+.DS_Store
+Thumbs.db
+*.log
+node_modules/
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Docker (just in case they come back)
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Environment variables
+.env

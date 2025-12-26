@@ -95,7 +95,12 @@ async function shareCard() {
     // Position off-screen for capture
     clone.style.position = 'absolute';
     clone.style.left = '-9999px';
-    clone.style.width = originalCard.offsetWidth + 'px'; // Maintain width
+    // Use a fixed width or ensure it has enough space. 
+    // offsetWidth might be constrained by parent or flex container in current context.
+    // Let's set a generous fixed width suitable for a "card" export.
+    clone.style.width = '400px'; 
+    clone.style.height = 'auto';
+    clone.style.padding = '2rem'; // ensure padding is consistent
     
     // Apply visual polish
     cleanUpCardForExport(clone);
@@ -212,7 +217,7 @@ form.addEventListener('submit', async (e) => {
     
     // Client-side Validation
     if (currentEncryption !== 'nopass' && !data.password) {
-        showError('Password is required for WPA/WEP networks');
+        showError("Oops! Don't forget the password (or check 'This is an Open Network')");
         return;
     }
 

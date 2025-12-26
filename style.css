@@ -12,7 +12,7 @@ html, body {
     }
     .mobile-page {
         scroll-snap-align: start;
-        padding-top: 1rem;
+        padding-top: env(safe-area-inset-top, 1rem); /* Safe area support */
         padding-bottom: 1rem;
     }
     /* Compact form on mobile */
@@ -29,12 +29,12 @@ html, body {
         gap: 0.75rem !important;
     }
     .glass-panel input[type="text"] {
-        padding: 0.625rem 0.75rem !important;
-        font-size: 0.875rem !important;
+        padding: 0.75rem !important;
+        font-size: 16px !important; /* Prevent iOS auto-zoom */
     }
     .glass-panel button[type="submit"] {
-        padding: 0.75rem 1rem !important;
-        font-size: 0.875rem !important;
+        padding: 0.875rem !important;
+        font-size: 1rem !important;
     }
     /* Full-screen card view on mobile */
     .mobile-card-active #form-section {
@@ -46,7 +46,14 @@ html, body {
         align-items: center;
         justify-content: center;
         animation: fadeSlideIn 0.4s ease-out;
+        padding-top: env(safe-area-inset-top, 2rem);
     }
+    /* Edit Details Button adjustments */
+    .mobile-back-button {
+        top: 2rem !important;
+        left: 2rem !important;
+    }
+    
     /* Hide card when editing on mobile */
     body:not(.mobile-card-active) #guest-card-container {
         display: none !important;
@@ -145,7 +152,8 @@ html, body {
 }
 .shape-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: #818cf8; }
 .shape-2 { bottom: -10%; right: -10%; width: 600px; height: 600px; background: #c084fc; }
-.shape-3 { top: 40%; left: 40%; width: 300px; height: 300px; background: #f472b6; animation: float 10s infinite ease-in-out; }
+/* Removed distracting pink shape */
+/* .shape-3 { top: 40%; left: 40%; width: 300px; height: 300px; background: #f472b6; animation: float 10s infinite ease-in-out; } */
 
 /* Hide shapes on mobile to prevent overflow */
 @media (max-width: 768px) {
