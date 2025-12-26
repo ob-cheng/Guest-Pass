@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuestPass - WiFi Access</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.1/qrcode.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-900 min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden relative text-white">
+
+    <!-- Background Shapes -->
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+
+    <main class="w-full max-w-md md:max-w-4xl mx-auto flex flex-col md:flex-row gap-8 items-center md:items-start justify-center z-10">
+        
+        <!-- Input Form Section -->
+        <section id="form-section" class="w-full md:w-1/2 glass-panel rounded-2xl p-6 md:p-8 no-print transition-all duration-500 hover:shadow-2xl mobile-page">
+            <header class="mb-8">
+                <h1 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">GuestPass</h1>
+                <p class="text-gray-200 mt-2 opacity-80">Create a premium WiFi access card for your guests.</p>
+            </header>
+
+            <form id="wifi-form" class="space-y-6">
+                <!-- Error Message Container -->
+                <div id="error-message" class="hidden bg-red-500/20 border border-red-500/50 text-red-200 p-4 rounded-xl text-sm backdrop-blur-sm"></div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-gray-200" for="ssid">Network Name (SSID)</label>
+                    <input type="text" id="ssid" name="ssid" required placeholder="e.g., MyHomeWiFi" 
+                        class="w-full p-4 rounded-xl glass-input placeholder-gray-400 focus:ring-2 focus:ring-white/20 transition-all">
+                </div>
+                
+                <div id="password-container">
+                    <label class="block text-sm font-medium mb-2 text-gray-200" for="password" id="password-label">Password</label>
+                    <input type="text" id="password" name="password" placeholder="Required for secure networks" 
+                        class="w-full p-4 rounded-xl glass-input placeholder-gray-400 focus:ring-2 focus:ring-white/20 transition-all">
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-start gap-3">
+                     <div class="relative flex items-start">
+                        <div class="flex items-center h-5">
+                          <input id="open-network" name="open-network" type="checkbox" 
+                            class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800">
+                        </div>
+                        <label for="open-network" class="ml-2 text-sm font-medium text-gray-200 cursor-pointer select-none">
+                            This is an Open Network<br><span class="text-xs opacity-70">(No Password)</span>
+                        </label>
+                    </div>
+                    <div class="relative flex items-start">
+                        <div class="flex items-center h-5">
+                          <input id="hide-password" name="hide-password" type="checkbox" 
+                            class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800">
+                        </div>
+                        <label for="hide-password" class="ml-2 text-sm font-medium text-gray-200 cursor-pointer select-none">
+                            Hide Password on Card
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Customization Section -->
+                <details class="glass-input rounded-xl cursor-pointer">
+                    <summary class="text-sm font-medium text-gray-200 p-4 w-full">Customize Card Text</summary>
+                    <div class="px-4 pb-4 space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium mb-1 text-gray-300" for="card-title">Card Title</label>
+                            <input type="text" id="card-title" name="card-title" value="Wi-Fi Access" 
+                                class="w-full p-3 rounded-lg glass-input placeholder-gray-400 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium mb-1 text-gray-300" for="card-subtitle">Card Subtitle</label>
+                            <input type="text" id="card-subtitle" name="card-subtitle" value="Guest Pass" 
+                                class="w-full p-3 rounded-lg glass-input placeholder-gray-400 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium mb-1 text-gray-300" for="card-footer">Footer Message</label>
+                            <input type="text" id="card-footer" name="card-footer" value="Scan to connect automatically" 
+                                class="w-full p-3 rounded-lg glass-input placeholder-gray-400 text-sm">
+                        </div>
+                    </div>
+                </details>
+                
+                <!-- Hidden field to store encryption value -->
+                <input type="hidden" id="encryption" name="encryption" value="WPA">
+
+                <button type="submit" 
+                    class="w-full py-4 px-6 rounded-xl glass-button text-white font-bold text-lg tracking-wide uppercase flex items-center justify-center gap-2">
+                    <span>Generate Guest Card</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </button>
+            </form>
+        </section>
+
+        <!-- Preview / Card Section -->
+        <section id="guest-card-container" class="w-full md:w-1/2 flex justify-center hidden opacity-0 transition-opacity duration-700 mobile-page relative">
+            <!-- Mobile Back Button -->
+            <button onclick="document.body.classList.remove('mobile-card-active'); window.scrollTo({ top: 0, behavior: 'smooth' })" 
+                class="absolute top-4 left-4 z-50 md:hidden flex items-center gap-2 text-white/90 hover:text-white transition-all group">
+                <div class="p-2 rounded-full glass-button group-hover:bg-white/10 shadow-lg backdrop-blur-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                </div>
+                <span class="font-medium text-sm tracking-wide">Edit Details</span>
+            </button>
+
+            <div id="guest-card" class="glass-panel rounded-2xl p-8 w-full max-w-sm flex flex-col items-center text-center border-t border-white/40">
+                <div class="mb-2">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white opacity-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                    </svg>
+                </div>
+                <h2 id="display-title" class="text-2xl font-bold tracking-widest uppercase mb-1">Wi-Fi Access</h2>
+                <p id="display-subtitle" class="text-xs uppercase tracking-widest opacity-70 mb-6">Guest Pass</p>
+                
+                <div class="bg-white p-2 rounded-xl mb-6 shadow-lg">
+                    <img id="qr-image" src="" alt="WiFi QR Code" class="w-48 h-48 object-contain rounded-lg">
+                </div>
+
+                <div class="w-full space-y-4 text-left px-4">
+                    <div class="border-b border-white/20 pb-2">
+                        <p class="text-[10px] uppercase tracking-wider opacity-60">Network Name</p>
+                        <p id="display-ssid" class="font-mono text-xl truncate pb-1"></p>
+                    </div>
+                    <div id="password-section" class="border-b border-white/20 pb-2">
+                        <p class="text-[10px] uppercase tracking-wider opacity-60">Password</p>
+                        <p id="display-password" class="font-mono text-xl truncate pb-1"></p>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <p id="display-footer" class="text-xs opacity-60">Scan to connect automatically</p>
+                </div>
+
+                <div class="flex flex-col gap-3 mt-8 w-full max-w-xs mx-auto">
+                    <button onclick="shareCard()" class="no-print w-full py-3 px-6 rounded-xl glass-button text-white font-semibold text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-white/20 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                        </svg>
+                        <span>Share Image</span>
+                    </button>
+
+                    <button onclick="window.print()" class="no-print w-full py-3 px-6 rounded-xl glass-button text-white/80 font-semibold text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-white/20 transition-all border-white/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                        </svg>
+                        <span>Print PDF</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Hidden Print Area -->
+    <div id="print-area"></div>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
