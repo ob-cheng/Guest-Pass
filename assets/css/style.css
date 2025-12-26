@@ -175,3 +175,27 @@ html, body {
         padding-bottom: 5rem; 
     }
 }
+
+/* Custom Details Marker */
+details > summary {
+    list-style: none; /* Firefox/Standard */
+    position: relative;
+    /* padding-right: 2.5rem; Space for the arrow - removed to keep layout tight */ 
+}
+details > summary::-webkit-details-marker {
+    display: none; /* Chrome/Safari */
+}
+details > summary::after {
+    content: '❯'; 
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    transition: transform 0.3s ease;
+    font-size: 0.8em;
+    opacity: 0.7;
+    color: white;
+}
+details[open] > summary::after {
+    transform: translateY(-50%) rotate(270deg);
+}
