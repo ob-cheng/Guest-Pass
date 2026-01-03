@@ -30,7 +30,12 @@ if (editDetailsBtn) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 }
-if (printBtn) printBtn.addEventListener('click', () => window.print());
+if (printBtn) {
+    printBtn.addEventListener('click', () => {
+        updatePrintArea();
+        window.print();
+    });
+}
 if (shareBtn) shareBtn.addEventListener('click', shareCard);
 
 // Toggle Password Field logic
@@ -188,20 +193,33 @@ function updatePrintArea() {
     const noPrintElements = cardContent.querySelectorAll('.no-print');
     noPrintElements.forEach(el => el.remove());
 
-    // Apply consistent clean style
+    // Remove responsive sizing classes that might mess up print layout
+    cardContent.classList.remove('w-full', 'md:w-1/2', 'glass-panel', 'border-t', 'border-white/40', 'h-full', 'min-h-screen');
+    
+    // Apply consistent clean style (Ink Friendly)
     cleanUpCardForExport(cardContent);
     
-    // OVERRIDE for PRINT specifically to stay ink-friendly but clean
-    // Keep print as "Ink Friendly" (White) but clean, and Share as "Digital Premium" (Dark).
+    // OVERRIDE for PRINT specifically to make it practical physical size
     cardContent.style.background = 'white';
     cardContent.style.color = 'black';
     cardContent.style.border = '2px solid black'; // Clean border for paper
+    cardContent.style.borderRadius = '12px';
     
-        // Force text colors for print
-    const texts = cardContent.querySelectorAll('*');
-    texts.forEach(el => {
+    // Set a practical fixed width and let height be auto
+    cardContent.style.width = '350px'; 
+    cardContent.style.minWidth = '350px';
+    cardContent.style.maxWidth = '350px';
+    cardContent.style.height = 'auto'; // CRITICAL: Stop stretching
+    cardContent.style.margin = '0'; // Flex container handles centering
+    cardContent.style.boxShadow = 'none';
+    
+    // Force text colors to black for print
+    cardContent.querySelectorAll('*').forEach(el => {
         el.style.color = 'black';
         el.style.textShadow = 'none';
+        el.style.borderColor = 'black';
+        // Remove glass backgrounds from inputs/buttons if any remain
+        el.style.background = 'transparent'; 
     });
 
     // Fix QR code for print
