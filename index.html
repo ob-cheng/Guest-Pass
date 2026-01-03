@@ -12,103 +12,107 @@
 <body class="bg-gray-900 min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden relative text-white">
 
     <!-- Background Shapes -->
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
-    <div class="shape shape-3"></div>
+    <!-- Background Shapes Removed for Performance -->
 
-    <main class="w-full max-w-md md:max-w-4xl mx-auto flex flex-col md:flex-row gap-8 items-center md:items-start justify-center z-10">
+    <main class="w-full max-w-md md:max-w-4xl mx-auto flex flex-col md:flex-row gap-8 items-center md:items-stretch justify-center z-10">
         
         <!-- Input Form Section -->
-        <section id="form-section" class="w-full md:w-1/2 glass-panel rounded-2xl p-6 md:p-8 no-print transition-all duration-500 hover:shadow-2xl mobile-page">
-            <header class="mb-8">
+        <section id="form-section" class="w-full md:w-1/2 glass-panel rounded-2xl p-6 md:p-8 no-print transition-all duration-500 hover:shadow-2xl mobile-page md:min-h-[650px] flex flex-col">
+            <header class="mb-6">
                 <h1 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">GuestPass</h1>
                 <p class="text-gray-200 mt-2 opacity-80">Create a premium WiFi access card for your guests.</p>
             </header>
 
-            <form id="wifi-form" class="space-y-6">
+            <form id="wifi-form" class="flex flex-col flex-1 h-full">
                 <!-- Error Message Container -->
-                <div id="error-message" class="hidden bg-red-500/20 border border-red-500/50 text-red-200 p-4 rounded-xl text-sm backdrop-blur-sm"></div>
+                <div id="error-message" class="hidden bg-red-500/20 border border-red-500/50 text-red-200 p-4 rounded-xl text-sm backdrop-blur-sm mb-4"></div>
 
-                <div>
-                    <label class="block text-sm font-medium mb-2 text-gray-200" for="ssid">Network Name (SSID)</label>
-                    <input type="text" id="ssid" name="ssid" required placeholder="e.g., MyHomeWiFi" 
-                        class="w-full p-4 rounded-xl glass-input placeholder-gray-400 focus:ring-2 focus:ring-white/20 transition-all">
+                <!-- Inputs Wrapper (Distributed Vertically) -->
+                <div class="flex-1 flex flex-col justify-evenly space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-200" for="ssid">Network Name (SSID)</label>
+                        <input type="text" id="ssid" name="ssid" required placeholder="e.g., MyHomeWiFi" 
+                            class="w-full p-4 rounded-xl glass-input placeholder-gray-400 focus:ring-2 focus:ring-white/20 transition-all">
+                    </div>
+                    
+                    <div id="password-container">
+                        <label class="block text-sm font-medium mb-2 text-gray-200" for="password" id="password-label">Password</label>
+                        <input type="text" id="password" name="password" placeholder="Required for secure networks" 
+                            class="w-full p-4 rounded-xl glass-input placeholder-gray-400 focus:ring-2 focus:ring-white/20 transition-all">
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-start gap-3">
+                         <div class="relative flex items-start">
+                            <div class="flex items-center h-5">
+                              <input id="open-network" name="open-network" type="checkbox" 
+                                class="w-4 h-4 border border-gray-300 rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                            </div>
+                            <label for="open-network" class="ml-2 text-sm font-medium text-gray-200 cursor-pointer select-none">
+                                This is an Open Network<br><span class="text-xs opacity-70">(No Password)</span>
+                            </label>
+                        </div>
+                        <div class="relative flex items-start">
+                            <div class="flex items-center h-5">
+                              <input id="hide-password" name="hide-password" type="checkbox" 
+                                class="w-4 h-4 border border-gray-300 rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                            </div>
+                            <label for="hide-password" class="ml-2 text-sm font-medium text-gray-200 cursor-pointer select-none">
+                                Hide Password on Card
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 
-                <div id="password-container">
-                    <label class="block text-sm font-medium mb-2 text-gray-200" for="password" id="password-label">Password</label>
-                    <input type="text" id="password" name="password" placeholder="Required for secure networks" 
-                        class="w-full p-4 rounded-xl glass-input placeholder-gray-400 focus:ring-2 focus:ring-white/20 transition-all">
-                </div>
-
-                <div class="flex flex-col sm:flex-row items-start gap-3">
-                     <div class="relative flex items-start">
-                        <div class="flex items-center h-5">
-                          <input id="open-network" name="open-network" type="checkbox" 
-                            class="w-4 h-4 border border-gray-300 rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-                        </div>
-                        <label for="open-network" class="ml-2 text-sm font-medium text-gray-200 cursor-pointer select-none">
-                            This is an Open Network<br><span class="text-xs opacity-70">(No Password)</span>
-                        </label>
-                    </div>
-                    <div class="relative flex items-start">
-                        <div class="flex items-center h-5">
-                          <input id="hide-password" name="hide-password" type="checkbox" 
-                            class="w-4 h-4 border border-gray-300 rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-                        </div>
-                        <label for="hide-password" class="ml-2 text-sm font-medium text-gray-200 cursor-pointer select-none">
-                            Hide Password on Card
-                        </label>
-                    </div>
-                </div>
-                
-                <!-- Customization Section -->
-                <details class="glass-input rounded-xl cursor-pointer">
-                    <summary class="text-sm font-medium text-gray-200 p-4 w-full">Customize Card Text</summary>
-                    <div class="px-4 pb-4 space-y-4">
-                        <div>
-                            <label class="block text-xs font-medium mb-1 text-gray-300" for="card-title">Card Title</label>
-                            <input type="text" id="card-title" name="card-title" value="Wi-Fi Access" 
-                                class="w-full p-3 rounded-lg glass-input placeholder-gray-400 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium mb-1 text-gray-300" for="card-subtitle">Card Subtitle</label>
-                            <input type="text" id="card-subtitle" name="card-subtitle" value="Guest Pass" 
-                                class="w-full p-3 rounded-lg glass-input placeholder-gray-400 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium mb-1 text-gray-300" for="card-footer">Footer Message</label>
-                            <input type="text" id="card-footer" name="card-footer" value="Scan to connect automatically" 
-                                class="w-full p-3 rounded-lg glass-input placeholder-gray-400 text-sm">
-                        </div>
-                    </div>
-                </details>
+                <!-- Customization moved to "Edit in Place" on the card itself -->
                 
                 <!-- Hidden field to store encryption value -->
                 <input type="hidden" id="encryption" name="encryption" value="WPA">
 
                 <button type="submit" 
-                    class="w-full py-4 px-6 rounded-xl glass-button text-white font-bold text-lg tracking-wide uppercase flex items-center justify-center gap-2">
+                    class="w-full py-4 px-6 rounded-xl glass-button text-white font-bold text-lg tracking-wide uppercase flex items-center justify-center gap-2 mb-6">
                     <span>Generate Guest Card</span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                 </button>
+
+                <!-- Footer Icons (Inside Panel) -->
+                <div class="flex justify-center gap-6 pt-0">
+                    <a href="https://github.com/ob-cheng/Guest-Pass" target="_blank" rel="noopener noreferrer" 
+                       class="text-white/60 hover:text-white transition-colors duration-300 transform hover:scale-110">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/tianen-cheng/" target="_blank" rel="noopener noreferrer" 
+                       class="text-white/60 hover:text-white transition-colors duration-300 transform hover:scale-110">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
             </form>
         </section>
 
         <!-- Preview / Card Section -->
         <section id="guest-card-container" class="w-full md:w-1/2 flex justify-center hidden opacity-0 transition-opacity duration-700 mobile-page relative">
 
-            <div id="guest-card" class="glass-panel rounded-2xl p-6 w-full max-w-sm flex flex-col items-center text-center border-t border-white/40 relative">
+            <div id="guest-card" class="glass-panel rounded-2xl p-6 w-full flex flex-col items-center text-center border-t border-white/40 relative h-full">
                 <!-- Mobile Back Button (Moved Inside) -->
                 <div class="mb-2">
                      <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white opacity-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
                     </svg>
                 </div>
-                <h2 id="display-title" class="text-2xl font-bold tracking-widest uppercase mb-1">Wi-Fi Access</h2>
-                <p id="display-subtitle" class="text-xs uppercase tracking-widest opacity-70 mb-2">Guest Pass</p>
+                <div class="group relative inline-block cursor-pointer hover:bg-white/10 px-2 rounded transition-colors" onclick="editField('display-title')">
+                    <h2 id="display-title" class="text-2xl font-bold tracking-widest uppercase mb-1 inline-block">Wi-Fi Access</h2>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 absolute -right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-50 text-white transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                </div>
+                
+                <div class="group relative inline-block cursor-pointer hover:bg-white/10 px-2 rounded transition-colors mb-2" onclick="editField('display-subtitle')">
+                    <p id="display-subtitle" class="text-xs uppercase tracking-widest opacity-70 inline-block">Guest Pass</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 absolute -right-5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-50 text-white transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                </div>
                 
                 <div class="bg-white p-2 rounded-xl mb-2 shadow-lg">
                     <img id="qr-image" src="" alt="WiFi QR Code" class="w-48 h-48 object-contain rounded-lg">
@@ -125,8 +129,9 @@
                     </div>
                 </div>
 
-                <div class="mt-2">
-                    <p id="display-footer" class="text-xs opacity-60">Scan to connect automatically</p>
+                <div class="mt-2 group relative inline-block cursor-pointer hover:bg-white/10 px-2 rounded transition-colors" onclick="editField('display-footer')">
+                    <p id="display-footer" class="text-xs opacity-60 inline-block">Scan to connect automatically</p>
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 absolute -right-5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-50 text-white transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                 </div>
 
                 <div class="flex flex-row md:flex-col gap-3 mt-3 w-full max-w-xs mx-auto">
@@ -160,21 +165,7 @@
 
     </main>
 
-    <!-- Footer -->
-    <footer class="fixed bottom-0 w-full p-4 flex justify-center gap-6 z-20 no-print">
-        <a href="https://github.com/ob-cheng/Guest-Pass" target="_blank" rel="noopener noreferrer" 
-           class="text-white/60 hover:text-white transition-colors duration-300 transform hover:scale-110">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
-            </svg>
-        </a>
-        <a href="https://www.linkedin.com/in/tianen-cheng/" target="_blank" rel="noopener noreferrer" 
-           class="text-white/60 hover:text-white transition-colors duration-300 transform hover:scale-110">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd" />
-            </svg>
-        </a>
-    </footer>
+    <!-- Hidden Print Area -->
 
     <!-- Hidden Print Area -->
     <div id="print-area"></div>

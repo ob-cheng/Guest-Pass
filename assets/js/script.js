@@ -48,16 +48,7 @@ if (passwordSectionElement) {
     passwordSectionElement.classList.add('smooth-collapse');
 }
 
-// Real-time card text updates
-document.getElementById('card-title').addEventListener('input', (e) => {
-    document.getElementById('display-title').textContent = e.target.value || 'Wi-Fi Access';
-});
-document.getElementById('card-subtitle').addEventListener('input', (e) => {
-    document.getElementById('display-subtitle').textContent = e.target.value || 'Guest Pass';
-});
-document.getElementById('card-footer').addEventListener('input', (e) => {
-    document.getElementById('display-footer').textContent = e.target.value || 'Scan to connect automatically';
-});
+// Customization listeners removed (Edit in Place used instead)
 
 function showError(msg) {
     errorMessage.textContent = msg;
@@ -243,10 +234,9 @@ form.addEventListener('submit', async (e) => {
         qrImage.src = qrUrl;
         displaySsid.textContent = data.ssid;
         
-        // Update custom text
-        document.getElementById('display-title').textContent = data['card-title'] || 'Wi-Fi Access';
-        document.getElementById('display-subtitle').textContent = data['card-subtitle'] || 'Guest Pass';
-        document.getElementById('display-footer').textContent = data['card-footer'] || 'Scan to connect automatically';
+        // Update custom text: ONLY if not already set (preserve edits) -> Actually better to just NOT update them here.
+        // The user edits them properly in place now. We shouldn't overwrite them with defaults on every generation.
+        // document.getElementById('display-title').textContent = ... (Removed to preserve user edits)
         
         const passwordSection = document.getElementById('password-section'); 
 
@@ -282,59 +272,7 @@ form.addEventListener('submit', async (e) => {
     }
 });
 
-// Helper for smooth height transition
-function animateHeightToggle(el, show) {
-    if (!el) return;
-    
-    // Prevent overlapping animations
-    if (el.dataset.isAnimating === 'true') return;
-    el.dataset.isAnimating = 'true';
-
-    if (show) {
-        // OPENING
-        el.classList.remove('collapsed');
-        el.style.display = 'block'; // Ensure it's visible to calc height
-        
-        // Get natural height
-        const height = el.scrollHeight;
-        
-        // Use a slight buffer if it seems small (often borders/margins get lost)
-        // or just set it.
-        
-        // Start from 0 if it was collapsed
-        if (el.style.maxHeight === '0px' || !el.style.maxHeight) {
-            el.style.maxHeight = '0px';
-        }
-        
-        void el.offsetHeight; // Force reflow
-        
-        el.style.maxHeight = height + 'px';
-        el.style.opacity = '1';
-        
-        // Cleanup after transition
-        setTimeout(() => {
-            el.style.maxHeight = null; // Remove restriction so it adapts
-            el.dataset.isAnimating = 'false';
-        }, 300);
-        
-    } else {
-        // CLOSING
-        
-        // Set fixed height to current height so we can transition FROM it
-        el.style.maxHeight = el.scrollHeight + 'px';
-        el.style.opacity = '1';
-        
-        void el.offsetHeight; // Force reflow
-        
-        el.classList.add('collapsed');
-        el.style.maxHeight = '0px';
-        el.style.opacity = '0';
-        
-        setTimeout(() => {
-            el.dataset.isAnimating = 'false';
-        }, 300);
-    }
-}
+// Unused animation function removed
 
 // Real-time card visibility updates
 function updateCardVisibility() {
@@ -361,13 +299,7 @@ function updateCardVisibility() {
 }
 
 // Also update print area on input changes
-const customizationInputs = ['card-title', 'card-subtitle', 'card-footer'];
-customizationInputs.forEach(id => {
-    document.getElementById(id).addEventListener('input', () => {
-        // Small delay to let the main card update first
-        setTimeout(updatePrintArea, 0); 
-    });
-});
+// Customization inputs removed, listeners removed
 
 hidePasswordCheckbox.addEventListener('change', updateCardVisibility);
 
@@ -415,71 +347,61 @@ openNetworkCheckbox.addEventListener('change', () => {
         updateCardVisibility();
 });
 
-// Accordion Animation Logic
-document.querySelectorAll('details').forEach((el) => {
-    const summary = el.querySelector('summary');
-    const content = el.querySelector('summary + div'); // The content div
+// Customization Logic Replaced by Edit-in-Place
 
-    // Store the animation status
-    let isAnimating = false;
+// Edit in Place Function
+window.editField = function(elementId) {
+    const el = document.getElementById(elementId);
+    if (!el) return; 
 
-    summary.addEventListener('click', (e) => {
-        e.preventDefault();
-        
-        if (isAnimating) return; // Ignore clicks during animation
-        
-        el.style.overflow = 'hidden';
+    // Stop if parent already has an input (already editing)
+    const parent = el.parentNode;
+    if (parent.querySelector('input')) return;
 
-        if (el.open) {
-            // Close Animation
-            isAnimating = true;
-            
-            // Set height to current full height to start transition
-            const startHeight = el.offsetHeight;
-            el.style.height = `${startHeight}px`;
-            
-            // Force reflow
-            void el.offsetHeight; 
-            
-            // Set height to summary height (closed state)
-            const endHeight = summary.offsetHeight;
-            el.style.height = `${endHeight}px`;
-            
-            // Wait for transition to finish
-            el.addEventListener('transitionend', function onEnd() {
-                el.removeEventListener('transitionend', onEnd);
-                el.open = false;
-                el.style.height = null; // Reset height
-                isAnimating = false;
-            });
-            
-        } else {
-            // Open Animation
-            isAnimating = true;
-            
-            // Calculate height of closed state
-            const startHeight = el.offsetHeight;
-            
-            // Open specifically to calculate target height
-            el.open = true;
-            const endHeight = el.offsetHeight;
-            // Also add a little buffer if content has margins, or just trust offsetHeight
-            
-            // Reset to start height to begin animation
-            el.style.height = `${startHeight}px`;
-            
-            // Force reflow
-            void el.offsetHeight;
-            
-            // Transition to full height
-            el.style.height = `${endHeight}px`;
-            
-            el.addEventListener('transitionend', function onEnd() {
-                el.removeEventListener('transitionend', onEnd);
-                el.style.height = null; // Remove fixed height so it can be dynamic
-                el.style.overflow = 'visible'; // Allow overflow if needed (e.g. tooltips)
-                isAnimating = false;
-            });
+    const currentText = el.textContent;
+
+    // Create input
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = currentText;
+    // Added 'edit-input' class for easier identification if needed
+    input.className = 'edit-input bg-transparent text-white border-b border-white/50 focus:outline-none focus:border-white w-full text-center font-inherit p-0 m-0';
+    
+    // Match styles
+    const styles = window.getComputedStyle(el);
+    input.style.font = styles.font;
+    input.style.letterSpacing = styles.letterSpacing;
+    input.style.textTransform = styles.textTransform;
+    input.style.color = 'white'; // Force white text color
+
+    // Stop propagation so clicking input doesn't re-trigger parent onclick
+    input.addEventListener('click', (e) => e.stopPropagation());
+
+    // Swap
+    el.classList.add('hidden');
+    parent.insertBefore(input, el);
+    input.focus();
+    input.select(); // Select all text for easy replacement
+
+    // Save on blur or enter
+    const save = () => {
+        const newValue = input.value;
+        if (newValue.trim()) {
+             el.textContent = newValue;
+        }
+        input.remove();
+        el.classList.remove('hidden');
+        updatePrintArea(); // Sync for print
+    };
+
+    // Handle saving
+    input.addEventListener('blur', save);
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            input.blur(); // Trigger save via blur
         }
     });
-});
+};
+
+/* Accordion Logic Removed */
+/* Accordion Logic Removed */
