@@ -50,6 +50,3 @@ open index.html
 *   **QRCode.js** — For reliable, standards-compliant code generation.
 *   **html2canvas** — For pixel-perfect export.
 
----
-
-
