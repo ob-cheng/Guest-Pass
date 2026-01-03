@@ -2,10 +2,10 @@
 
 ### The premium way to share your WiFi.
 
-[![Try Online](https://img.shields.io/badge/Try_Online-GuestPass_Demo-white?style=for-the-badge&logo=vercel&logoColor=black&labelColor=white)](https://guest-pass.vercel.app/)
+[![Try Online](https://img.shields.io/badge/Try_Online-GuestPass_Demo-white?style=for-the-badge&logo=github&logoColor=black&labelColor=white)](https://ob-cheng.github.io/Guest-Pass/)
 [![License](https://img.shields.io/badge/License-MIT-gray?style=for-the-badge&labelColor=1e293b&color=334155)](LICENSE)
 
-![GuestPass Mockup](assets/images/A_highquality_photorealistic_2k_20260103164.jpeg)
+![GuestPass Mockup](assets/images/A_highquality_photorealistic_2k_20260103170.jpeg)
 
 **GuestPass** transforms the mundane task of sharing WiFi credentials into a seamless, elegant experience. No more reading passwords from the back of a router. Just design, generate, and share.
 
