@@ -1,58 +1,55 @@
-# Guest Pass
+# GuestPass
 
-A premium, client-side WiFi QR code generator designed to create beautiful, printable access cards for your guests.
+### The premium way to share your WiFi.
 
-[**🌐 Try it Online**](https://ob-cheng.github.io/Guest-Pass/)
+[![Try Online](https://img.shields.io/badge/Try_Online-GuestPass_Demo-white?style=for-the-badge&logo=vercel&logoColor=black&labelColor=white)](https://guest-pass.vercel.app/)
+[![License](https://img.shields.io/badge/License-MIT-gray?style=for-the-badge&labelColor=1e293b&color=334155)](LICENSE)
 
-## 🔒 Privacy & Security
+![GuestPass Mockup](assets/images/A_highquality_photorealistic_2k_20260103164.jpeg)
 
-**Your data never leaves your device.**
+**GuestPass** transforms the mundane task of sharing WiFi credentials into a seamless, elegant experience. No more reading passwords from the back of a router. Just design, generate, and share.
 
-This application is built as a **100% Client-Side Application**.
-*   **No Server:** There is no backend server processing your information.
-*   **Local Processing:** When you type your WiFi password, it is processed entirely within your browser's memory using JavaScript.
-*   **Zero-Knowledge:** We cannot see, store, or transmit your network credentials because the code runs strictly on your machine.
+It’s simple. It’s private. It just works.
 
-## ⚙️ How It Works
+## Experience
 
-The QR code generation logic follows standard WiFi connection protocols, but implemented entirely in the browser:
+### Privacy by Design.
+Your credentials never leave your device. All processing—encryption, QR generation, card rendering—happens locally in your browser. We don't see your password, and neither does anyone else.
 
-1.  **String Formatting:** The app takes your SSID and Password and formats them into a standardized string that smartphones recognize:
-    `WIFI:T:WPA;S:YourNetworkName;P:YourPassword;;`
-2.  **Visual Encoding:** We use a JavaScript library (`qrcode.js`) to convert this text string into a matrix of black and white pixels (the QR code) directly in the DOM.
-3.  **Image Generation:** When you click "Share," we use `html2canvas` to take a high-resolution screenshot of the DOM element and convert it to a PNG blob, all without external APIs.
+### Instant Generation.
+Type your network details, and GuestPass instantly creates a high-fidelity QR code. It’s compatible with every modern smartphone camera.
 
-## 💻 Installation & Usage
+### Premium Aesthetics.
+Built with a "Deep Ocean" glassmorphism UI that feels at home on the most premium devices. We believe utility shouldn't compromise on beauty.
 
-### 1. Clone the Repository
-Start by cloning the project to your local machine:
+## How It Works
+
+1.  **Enter Details** — Input your SSID and Password. All local.
+2.  **Customize** — Click directly on the card to edit the text in real-time. Make it yours.
+3.  **Share** — Click "Share Image" to send a digital copy, or "Print PDF" for a physical card.
+
+## Quick Start
+
+Run it locally in seconds. No complex dependencies.
+
 ```bash
+# Clone the repository
 git clone https://github.com/ob-cheng/Guest-Pass.git
+
+# Enter directory
 cd Guest-Pass
+
+# Open index.html in your browser
+open index.html
 ```
 
-### 2. Run Locally
-While this is a static site that *can* work by just opening the file, we recommend running a local server for the best development experience.
+## Tech Stack
 
-**Method A: VS Code Live Server (Recommended)**
-1.  Open the folder in **Visual Studio Code**.
-2.  Install the **Live Server** extension (if you haven't already).
-3.  Right-click `index.html` and select **"Open with Live Server"**.
+*   **HTML5 & Tailwind CSS** — For structure and modern, fluid styling.
+*   **Vanilla JavaScript** — For lightning-fast performance without framework bloat.
+*   **QRCode.js** — For reliable, standards-compliant code generation.
+*   **html2canvas** — For pixel-perfect export.
 
-**Method B: Python Simple Server**
-If you have Python installed, you can launch a quick local server:
-```bash
-# Python 3
-python -m http.server 8000
-```
-Then open `http://localhost:8000` in your browser.
+---
 
-**Method C: Drag & Drop**
-Refactoring to client-side means you can also just locate the folder and double-click `index.html`. 
-*Note: Ensure the `assets` folder is present in the same directory.*
 
-## ✨ Features
-*   **Secure:** 100% offline-capable logic.
-*   **Instant:** Real-time preview and generation.
-*   **Responsive:** Works beautifully on mobile and desktop.
-*   **Export Ready:** Purpose-built "Print" (clean, ink-friendly) and "Share Image" (premium dark mode) features.

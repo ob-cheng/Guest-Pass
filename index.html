@@ -11,7 +11,6 @@
 </head>
 <body class="bg-gray-900 min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden relative text-white">
 
-    <!-- Background Shapes -->
     <!-- Background Shapes Removed for Performance -->
 
     <main class="w-full max-w-md md:max-w-4xl mx-auto flex flex-col md:flex-row gap-8 items-center md:items-stretch justify-center z-10">
@@ -104,12 +103,12 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
                     </svg>
                 </div>
-                <div class="group relative inline-block cursor-pointer hover:bg-white/10 px-2 rounded transition-colors" onclick="editField('display-title')">
+                <div class="group relative inline-block cursor-pointer hover:bg-white/10 px-2 rounded transition-colors" id="edit-title-btn">
                     <h2 id="display-title" class="text-2xl font-bold tracking-widest uppercase mb-1 inline-block">Wi-Fi Access</h2>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 absolute -right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-50 text-white transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                 </div>
                 
-                <div class="group relative inline-block cursor-pointer hover:bg-white/10 px-2 rounded transition-colors mb-2" onclick="editField('display-subtitle')">
+                <div class="group relative inline-block cursor-pointer hover:bg-white/10 px-2 rounded transition-colors mb-2" id="edit-subtitle-btn">
                     <p id="display-subtitle" class="text-xs uppercase tracking-widest opacity-70 inline-block">Guest Pass</p>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 absolute -right-5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-50 text-white transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                 </div>
@@ -129,14 +128,14 @@
                     </div>
                 </div>
 
-                <div class="mt-2 group relative inline-block cursor-pointer hover:bg-white/10 px-2 rounded transition-colors" onclick="editField('display-footer')">
+                <div class="mt-2 group relative inline-block cursor-pointer hover:bg-white/10 px-2 rounded transition-colors" id="edit-footer-btn">
                     <p id="display-footer" class="text-xs opacity-60 inline-block">Scan to connect automatically</p>
                      <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 absolute -right-5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-50 text-white transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                 </div>
 
                 <div class="flex flex-row md:flex-col gap-3 mt-3 w-full max-w-xs mx-auto">
                     <!-- Edit Details (Mobile Only, First) -->
-                    <button onclick="document.body.classList.remove('mobile-card-active'); window.scrollTo({ top: 0, behavior: 'smooth' })" 
+                    <button id="edit-details-btn" 
                         class="no-print md:hidden flex-1 py-3 px-4 rounded-xl glass-button text-white font-semibold text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-white/20 transition-all">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
@@ -145,7 +144,7 @@
                     </button>
 
                     <!-- Print PDF (Icon on Mobile) -->
-                    <button onclick="window.print()" class="no-print flex-none md:flex-1 w-12 md:w-full py-3 px-0 md:px-6 rounded-xl glass-button text-white/80 font-semibold text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-white/20 transition-all border-white/20">
+                    <button id="print-btn" class="no-print flex-none md:flex-1 w-12 md:w-full py-3 px-0 md:px-6 rounded-xl glass-button text-white/80 font-semibold text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-white/20 transition-all border-white/20">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                         </svg>
@@ -153,7 +152,7 @@
                     </button>
 
                     <!-- Share Image (Icon on Mobile) -->
-                    <button onclick="shareCard()" class="no-print flex-none md:flex-1 w-12 md:w-full py-3 px-0 md:px-6 rounded-xl glass-button text-white font-semibold text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-white/20 transition-all">
+                    <button id="share-btn" class="no-print flex-none md:flex-1 w-12 md:w-full py-3 px-0 md:px-6 rounded-xl glass-button text-white font-semibold text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-white/20 transition-all">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                         </svg>
@@ -167,7 +166,7 @@
 
     <!-- Hidden Print Area -->
 
-    <!-- Hidden Print Area -->
+
     <div id="print-area"></div>
 
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>

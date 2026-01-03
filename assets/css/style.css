@@ -1,10 +1,16 @@
+:root {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --accent-color: #0e7490;
+}
+
 html, body { 
     font-family: 'Outfit', sans-serif; 
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior-x: none;
-    /* Updated to 'Deep Ocean' Theme: Slate to Teal (No Purple) */
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0e7490 100%);
+    /* Updated to 'Deep Ocean' Theme: Slate to Teal */
+    background: linear-gradient(135deg, var(--bg-color) 0%, #1e293b 50%, var(--accent-color) 100%);
     min-height: 100vh;
 }
 
@@ -144,8 +150,7 @@ html, body {
         transform: scale(1) !important;
     }
 }
-/* Floating shapes for background */
-/* Shapes removed for performance */
+
 
 /* Ensure print area is hidden by default on screen */
 #print-area { display: none; }
@@ -188,9 +193,7 @@ details {
     transition: height 0.3s ease-out;
 }
 
-/* Dynamic Height & Scrolling for Desktop/Tablet */
 /* Dynamic Height & Scrolling removed to allow natural page layout */
-/* Smooth Collapse/Expand Utility */
 /* Smooth Collapse/Expand Utility */
 .smooth-collapse {
     /* 

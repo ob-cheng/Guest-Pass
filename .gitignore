@@ -15,3 +15,9 @@ docker-compose.yml
 
 # Environment variables
 .env
+
+# System Files
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+

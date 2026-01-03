@@ -12,6 +12,27 @@ const passwordContainer = document.getElementById('password-container');
 const encryptionInput = document.getElementById('encryption');
 const printArea = document.getElementById('print-area');
 
+// New Event Listeners for Customization (replacing inline handlers)
+const editTitleBtn = document.getElementById('edit-title-btn');
+const editSubtitleBtn = document.getElementById('edit-subtitle-btn');
+const editFooterBtn = document.getElementById('edit-footer-btn');
+const editDetailsBtn = document.getElementById('edit-details-btn');
+const printBtn = document.getElementById('print-btn');
+const shareBtn = document.getElementById('share-btn');
+
+if (editTitleBtn) editTitleBtn.addEventListener('click', () => editField('display-title'));
+if (editSubtitleBtn) editSubtitleBtn.addEventListener('click', () => editField('display-subtitle'));
+if (editFooterBtn) editFooterBtn.addEventListener('click', () => editField('display-footer'));
+
+if (editDetailsBtn) {
+    editDetailsBtn.addEventListener('click', () => {
+        document.body.classList.remove('mobile-card-active'); 
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+if (printBtn) printBtn.addEventListener('click', () => window.print());
+if (shareBtn) shareBtn.addEventListener('click', shareCard);
+
 // Toggle Password Field logic
 function updatePasswordState() {
     const isOpen = openNetworkCheckbox.checked;
@@ -48,7 +69,7 @@ if (passwordSectionElement) {
     passwordSectionElement.classList.add('smooth-collapse');
 }
 
-// Customization listeners removed (Edit in Place used instead)
+
 
 function showError(msg) {
     errorMessage.textContent = msg;
@@ -66,7 +87,10 @@ function cleanUpCardForExport(clone) {
     
     // Set solid background to match theme (dark blue/gray)
     // Using a specific hex that matches the dark theme aesthetic
+    // Set solid background to match theme (dark blue/gray)
+    // Using CSS variable value manually here for canvas export
     clone.style.backgroundColor = '#1e293b'; // slate-800
+
     clone.style.border = 'none';
     clone.style.boxShadow = 'none';
     clone.style.borderRadius = '16px'; // Ensure rounded corners are clean
@@ -403,5 +427,4 @@ window.editField = function(elementId) {
     });
 };
 
-/* Accordion Logic Removed */
-/* Accordion Logic Removed */
+
